@@ -5,7 +5,4 @@ const router = express.Router()
 router.route("/create").post(isAuth, createTask)
 router.route("/my").get(isAuth, allUserTask)
 router.route("/:id").put(isAuth, updateUser).delete(isAuth,deleteUser)
-
-
-
 module.exports = router

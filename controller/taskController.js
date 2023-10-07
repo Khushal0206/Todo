@@ -1,5 +1,5 @@
 const Task = require("../Model/task");
-const Errorhandle = require("../middlewares/error");
+const ErrorHandler = require("../utils/error");
 exports.createTask = async (req, res, next) => {
   try {
     const { title, description } = req.body;
@@ -41,7 +41,7 @@ exports.updateUser = async(req, res, next) => {
     
     const id = req.params.id;
     const task = await Task.findById(id)
-    if(!task) return next(new Errorhandle("invalid email and password",401))
+    if(!task) return next(new ErrorHandler("invalid email and password",401))
   
    task.isComplite = !task.isComplite;
     await task.save()
@@ -58,7 +58,7 @@ exports.deleteUser = async(req, res, next) => {
     const id = req.params.id;
     const task = await Task.findById(id)
   
-    if(!task) return next(new Errorhandle("id not found", 401))
+    if(!task) return next(new ErrorHandler("id not found", 401))
   
     task.deleteOne();
     res.status(201).json({

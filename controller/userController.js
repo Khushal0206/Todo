@@ -1,7 +1,7 @@
 const User = require("../Model/User")
 const jwt = require("jsonwebtoken")
 const bcrypt= require("bcrypt")
-const Errorhandle = require("../middlewares/error")
+const ErrorHandler = require("../utils/error")
 
 //create user
 exports.createUse = async(req,res,next)=>{
@@ -44,7 +44,7 @@ exports.loginUser= async(req,res,next)=>{
         
         const {email,password} = req.body;
         const user = await User.findOne({email:email}).select("+password")
-        if(!user) return next(new Errorhandle(" email and id invalid", 401))
+        if(!user) return next(new ErrorHandler(" email and id invalid", 401))
         const p = await bcrypt.compare(password,user.password)
         //console.log(p instanceof Promise)
         if(!p){
