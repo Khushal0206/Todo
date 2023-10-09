@@ -5,7 +5,7 @@ exports.createTask = async (req, res, next) => {
     const { title, description } = req.body;
     await Task.create({ title, description, user: req.user });
   
-    res.status(201).json({
+    res.status(200).json({
       messeage: "created",
     });
     
@@ -21,7 +21,7 @@ exports.createTask = async (req, res, next) => {
     try {
       const id = req.user._id;
       const task = await Task.find({ user: id });
-      res.status(201).json({
+      res.status(200).json({
         messeage: "success",
         task,
       });
@@ -41,11 +41,11 @@ exports.updateUser = async(req, res, next) => {
     
     const id = req.params.id;
     const task = await Task.findById(id)
-    if(!task) return next(new ErrorHandler("invalid email and password",401))
+    if(!task) return next(new ErrorHandler("pleasee enter valid email password",401))
   
    task.isComplite = !task.isComplite;
     await task.save()
-    res.status(201).json({
+    res.status(200).json({
         messeage: "updated",
       });
   } catch (error) {
@@ -58,10 +58,10 @@ exports.deleteUser = async(req, res, next) => {
     const id = req.params.id;
     const task = await Task.findById(id)
   
-    if(!task) return next(new ErrorHandler("id not found", 401))
+    if(!task) return next(new ErrorHandler("id not found", 400))
   
     task.deleteOne();
-    res.status(201).json({
+    res.status(200).json({
       messeage: "deleted",
     });
     

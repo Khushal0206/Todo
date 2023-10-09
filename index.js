@@ -28,9 +28,10 @@ app.use("/api/v1",userRoute)
 app.use("/api/v1",TaskRoute)
 
 
-// custom error class
 
-
+app.get("/",(req,res)=>{
+    res.send("Nice working");
+})
 /// USE ERROR MIDDLEWARE
 const errormiddle  = require("./middlewares/error")
 app.use(errormiddle)

@@ -12,6 +12,10 @@ exports.createUse = async(req,res,next)=>{
         // const password = req.body.password
         //or 
          const {email,name,password} = req.body
+         const data = await User.findOne({ email });
+
+         if (data) return next(new ErrorHandler("User Already Exist", 400));
+     
          const hashpassword  = await bcrypt.hash(password,10)
         //  if (hashpassword instanceof Promise) {
         //     console.log("It's a Promise!");
@@ -28,7 +32,7 @@ exports.createUse = async(req,res,next)=>{
             secure: process.env.NODE_ENV === "Development" ? false : true,
       
         })
-        res.status(201).json({
+        res.status(200).json({
             message:"created",
             user
         })
@@ -44,11 +48,11 @@ exports.loginUser= async(req,res,next)=>{
         
         const {email,password} = req.body;
         const user = await User.findOne({email:email}).select("+password")
-        if(!user) return next(new ErrorHandler(" email and id invalid", 401))
+        if(!user) return next(new ErrorHandler("pleasee enter valid Email and password", 401))
         const p = await bcrypt.compare(password,user.password)
         //console.log(p instanceof Promise)
         if(!p){
-            res.status(201).json({
+            res.status(401).json({
                 message:"please enter valid email and password ",
                 
             })
@@ -61,8 +65,8 @@ exports.loginUser= async(req,res,next)=>{
             secure: process.env.NODE_ENV === "Development" ? false : true,
       
         })
-        res.status(201).json({
-            message:"created",
+        res.status(200).json({
+            message:"login successfully",
             user
         })
     } catch (error) {
@@ -84,7 +88,7 @@ exports.myDatail = (req,res,next)=>{
  
 try {
     const user = req.user;
-       res.status(201).json({
+       res.status(200).json({
            message:"created",
            user
        })
@@ -107,7 +111,7 @@ exports.logOut = async(req,res,next)=>{
               secure: process.env.NODE_ENV === "Development" ? false : true,
         
           })
-          res.status(201).json({
+          res.status(200).json({
               message:"Logout",
           })
     } catch (error) {
